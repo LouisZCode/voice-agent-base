@@ -118,6 +118,41 @@ class SessionLogger:
         print(f"Session log saved to: {self._log_file}")
 
 
+def setup_session_logger(stt, tts, llm_model: str, log_dir: str = "logs/conversations"):
+    """
+    Create and configure session logger from service objects.
+    Extracts config dynamically from STT and TTS services.
+
+    Args:
+        stt: DeepgramSTTService instance
+        tts: MiniMaxHttpTTSService instance
+        llm_model: LLM model name string
+        log_dir: Directory for log files
+
+    Returns:
+        SessionLogger instance (already configured with loguru sink)
+    """
+    from loguru import logger
+
+    session_logger = SessionLogger(log_dir=log_dir)
+    session_logger.write_header({
+        "deepgram": {
+            "language": stt._settings.get("language"),
+            "model": stt._settings.get("model"),
+        },
+        "minimax": {
+            "model": tts._model_name,
+            "voice_id": tts._voice_id,
+            "language": tts._settings.get("language_boost"),
+            "speed": tts._settings.get("voice_setting", {}).get("speed"),
+        },
+        "llm": {"model": llm_model},
+    })
+    logger.add(create_pipecat_log_sink(session_logger), filter="pipecat")
+
+    return session_logger
+
+
 def create_pipecat_log_sink(session_logger: SessionLogger):
     """
     Creates a loguru sink that intercepts pipecat logs and routes to SessionLogger.

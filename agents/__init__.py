@@ -3,10 +3,9 @@ Here you can find all the existing agents ready to be used. Already prompt and a
 
 You can find here:
 
-test_agent
+_raw_agent
 
 """
-
-from .agents import test_agent, _raw_agent
+from .pipecat_wrapper import test_agent
 
 print("Agents module loaded correctly...")
