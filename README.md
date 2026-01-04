@@ -1,6 +1,14 @@
-# Spralingua v2
+# Voice Agent Base
 
-Real-time voice conversation agent for language learning.
+Real-time voice conversation agent template. Build voice-enabled applications with STT, LLM, and TTS.
+
+## Template Usage
+
+1. Click "Use this template" on GitHub to create your project
+2. Clone your new repository
+3. Customize `agents/prompts.yaml` with your assistant's personality
+4. Update environment variables in `.env`
+5. Run `python main.py`
 
 ## Architecture
 

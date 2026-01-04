@@ -6,7 +6,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 load_dotenv()
 
 prompts = load_prompts()
-conversation_prompt = prompts["conversationalist_prompt"]
+conversation_prompt = prompts["assistant_prompt"]
 
 
 CONVERSATIONAL_MODEL = "openai:gpt-4.1-nano-2025-04-14"
