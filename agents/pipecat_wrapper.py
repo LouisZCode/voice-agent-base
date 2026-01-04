@@ -19,6 +19,6 @@ async def _astream(input_dict, config=None):
 
 
 # Export wrapper that Pipecat can use
-class test_agent:
+class conversation_agent:
     model = CONVERSATIONAL_MODEL
     astream = staticmethod(_astream)

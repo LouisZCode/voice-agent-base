@@ -10,7 +10,7 @@ from pipecat.processors.aggregators.llm_response_universal import LLMContextAggr
 from pipecat.processors.frameworks.langchain import LangchainProcessor
 
 # Your LangChain agent
-from agents import test_agent
+from agents import conversation_agent
 
 # Session logging
 from logs import setup_session_logger
@@ -25,7 +25,7 @@ async def pipeline():
         stt = stt_deepgram()
 
         # LLM (LangChain agent instead of OpenAI directly)
-        llm = LangchainProcessor(chain=test_agent)
+        llm = LangchainProcessor(chain=conversation_agent)
 
         # Text-to-Speech (MiniMax with custom params)
         tts = tts_minimax(session)
@@ -38,7 +38,7 @@ async def pipeline():
         context_aggregator = LLMContextAggregatorPair(context)
 
         # Session logger - extracts config dynamically from services
-        session_logger = setup_session_logger(stt, tts, test_agent.model)
+        session_logger = setup_session_logger(stt, tts, conversation_agent.model)
 
         pipeline = Pipeline([
             transport.input(),
