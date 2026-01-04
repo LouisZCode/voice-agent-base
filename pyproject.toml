@@ -1,5 +1,5 @@
 [project]
-name = "spralingua-v2"
+name = "voice-agent-base"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
