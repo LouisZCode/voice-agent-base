@@ -10,7 +10,10 @@ async def _astream(input_dict, config=None):
     text = input_dict.get("input", "")
     messages = {"messages": [{"role": "user", "content": text}]}
 
-    async for chunk in _raw_agent.astream(messages, config=config):
+    # Add thread_id for InMemorySaver
+    run_config = {"configurable": {"thread_id": "voice-session"}}
+
+    async for chunk in _raw_agent.astream(messages, config=run_config):
         # Handle nested structure: {'model': {'messages': [AIMessage(...)]}}
         if "model" in chunk and "messages" in chunk["model"]:
             for msg in chunk["model"]["messages"]:
