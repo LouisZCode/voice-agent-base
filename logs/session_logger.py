@@ -21,15 +21,22 @@ class SessionLogger:
     """
 
     def __init__(self, log_dir: str = "logs/conversations"):
-        self._log_dir = Path(log_dir)
-        self._log_dir.mkdir(parents=True, exist_ok=True)
-
+        self._base_dir = Path(log_dir)
         self._session_start = datetime.now()
 
-        # Daily log file (append mode)
+        # Daily folder
         today = self._session_start.strftime("%Y-%m-%d")
-        self._log_file = self._log_dir / f"{today}.log"
-        self._file = open(self._log_file, "a", encoding="utf-8")
+        self._day_dir = self._base_dir / today
+        self._day_dir.mkdir(parents=True, exist_ok=True)
+
+        # Auto-increment session number
+        existing = list(self._day_dir.glob("session_*.log"))
+        self._session_num = len(existing) + 1
+        self._session_id = f"session_{self._session_num:03d}"
+
+        # Log file
+        self._log_file = self._day_dir / f"{self._session_id}.log"
+        self._file = open(self._log_file, "w", encoding="utf-8")
 
         # Turn timing trackers
         self._user_started_ts = None
@@ -64,6 +71,16 @@ class SessionLogger:
         """Write a line to log file."""
         self._file.write(message + "\n")
         self._file.flush()
+
+    @property
+    def session_dir(self) -> Path:
+        """Return the daily session directory."""
+        return self._day_dir
+
+    @property
+    def session_id(self) -> str:
+        """Return the session ID (e.g., 'session_001')."""
+        return self._session_id
 
     def _format_duration(self, seconds: int) -> str:
         """Format duration smartly: 15s, 3m 40s, 1h 2m 0s"""

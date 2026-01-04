@@ -19,7 +19,7 @@ def tts_minimax(session):
         group_id=minimax_group_id,
         aiohttp_session=session,
         model="speech-02-turbo",   # speech-02-turbo (fast), speech-02-hd (quality) - constructor param
-        voice_id="german_bavarian_male_v2",  # Your cloned voice or system voice, german_bavarian_female, german_bavarian_male_v2 - constructor param
+        voice_id="german_bavarian_female",  # Your cloned voice or system voice, german_bavarian_female, german_bavarian_male_v2 , Calm_Woman, - constructor param
         params=MiniMaxHttpTTSService.InputParams(
             speed=1.0,                 # 0.5 to 2.0
             pitch=0,                   # -12 to 12

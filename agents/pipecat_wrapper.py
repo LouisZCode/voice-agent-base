@@ -6,19 +6,22 @@ from .conversation import _raw_agent, CONVERSATIONAL_MODEL
 
 # Wrapper function for Pipecat compatibility
 async def _astream(input_dict, config=None):
-    """Translates Pipecat format to agent format and streams response."""
+    """Translates Pipecat format to agent format and streams tokens."""
     text = input_dict.get("input", "")
     messages = {"messages": [{"role": "user", "content": text}]}
 
     # Add thread_id for InMemorySaver
     run_config = {"configurable": {"thread_id": "voice-session"}}
 
-    async for chunk in _raw_agent.astream(messages, config=run_config):
-        # Handle nested structure: {'model': {'messages': [AIMessage(...)]}}
-        if "model" in chunk and "messages" in chunk["model"]:
-            for msg in chunk["model"]["messages"]:
-                if hasattr(msg, "content") and msg.content:
-                    yield msg.content
+    # Use stream_mode="messages" for token-by-token streaming
+    async for token, metadata in _raw_agent.astream(
+        messages,
+        config=run_config,
+        stream_mode="messages"
+    ):
+        # Only yield content from model node (not tool calls)
+        if hasattr(token, "content") and token.content:
+            yield token.content
 
 
 # Export wrapper that Pipecat can use

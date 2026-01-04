@@ -10,5 +10,6 @@ dependencies = [
     "langchain-openai>=1.1.6",
     "pipecat-ai[deepgram,silero]>=0.0.98",
     "pyaudio>=0.2.14",
+    "pydub>=0.25.1",
     "python-dotenv>=1.2.1",
 ]
