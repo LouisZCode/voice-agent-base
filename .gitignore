@@ -4,6 +4,7 @@ Thumbs.db
 
 #Data area:
 data/
+logs/conversations/
 
 # Internal
 todo_list.md
